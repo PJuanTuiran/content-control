@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -46,5 +47,10 @@ public class StudentModelImpl implements IStudentModel {
                     .classes(classDTOs)
                     .build();
         });
+    }
+
+    @Override
+    public Optional<Student> getById(Long id) {
+        return studentRepository.findById(id);
     }
 }
