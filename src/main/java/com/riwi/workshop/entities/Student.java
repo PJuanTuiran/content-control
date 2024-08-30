@@ -8,8 +8,9 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
+import java.util.Set;
 
-    @Entity
+@Entity
     @Getter
     @Setter
     @AllArgsConstructor
@@ -48,4 +49,10 @@ import java.time.LocalDate;
 
         @FutureOrPresent
         private LocalDate createdAt;
+
+        @ManyToMany
+
+        @JoinTable(name = "student_class", joinColumns = @JoinColumn(name = "student_id"), inverseJoinColumns = @JoinColumn(name = "class_id")
+        )
+        private Set<Class> classes;
 }
