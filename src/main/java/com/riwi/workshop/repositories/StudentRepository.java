@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface StudentRepository extends JpaRepository<Student, Long> {
-    Page<Student> findByName(String name, Pageable pageable);
+    Page<Student> findByActiveTrue(Pageable pageable);
 }
