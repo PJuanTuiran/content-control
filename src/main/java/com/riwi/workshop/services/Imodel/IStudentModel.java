@@ -7,5 +7,5 @@ import org.springframework.data.domain.Page;
 import java.util.List;
 
 public interface IStudentModel {
-    Page<StudentOnlyClassInformationDTO> getActiveStudents(int page, int size);
+    Page<StudentOnlyClassInformationDTO> getActiveStudents(int page, int size, String name);
 }

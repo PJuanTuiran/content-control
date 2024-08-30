@@ -21,10 +21,16 @@ public class StudentModelImpl implements IStudentModel {
     StudentRepository studentRepository;
 
     @Override
-    public Page<StudentOnlyClassInformationDTO> getActiveStudents(int page, int size) {
+    public Page<StudentOnlyClassInformationDTO> getActiveStudents(int page, int size, String name) {
 
         Pageable pageable = PageRequest.of(page, size);
-        Page<Student> studentPage = studentRepository.findByActiveTrue(pageable);
+        Page<Student> studentPage;
+
+        if(name != null && !name.isEmpty()){
+            studentPage = studentRepository.findByActiveTrueAndName(name, pageable);
+        }else{
+            studentPage = studentRepository.findByActiveTrue(pageable);
+        }
 
         return studentPage.map(student -> {
             List<ClassInformationDTO> classDTOs = student.getClasses().stream()
