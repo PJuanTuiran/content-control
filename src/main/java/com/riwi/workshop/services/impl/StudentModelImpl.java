@@ -27,7 +27,7 @@ public class StudentModelImpl implements IStudentModel {
         Page<Student> studentPage;
 
         if(name != null && !name.isEmpty()){
-            studentPage = studentRepository.findByActiveTrueAndName(name, pageable);
+            studentPage = studentRepository.findByActiveTrueAndNameContainingIgnoreCase(name, pageable);
         }else{
             studentPage = studentRepository.findByActiveTrue(pageable);
         }
