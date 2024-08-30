@@ -1,5 +1,7 @@
 package com.riwi.workshop.services.impl;
 
+import com.riwi.workshop.entities.DTO.ClassInformationDTO;
+import com.riwi.workshop.entities.DTO.StudentOnlyClassInformationDTO;
 import com.riwi.workshop.entities.Student;
 import com.riwi.workshop.repositories.StudentRepository;
 import com.riwi.workshop.services.Imodel.IStudentModel;
@@ -9,6 +11,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class StudentModelImpl implements IStudentModel {
 
@@ -16,8 +21,24 @@ public class StudentModelImpl implements IStudentModel {
     StudentRepository studentRepository;
 
     @Override
-    public Page<Student> getByName(String name, int page, int size) {
+    public Page<StudentOnlyClassInformationDTO> getActiveStudents(int page, int size) {
+
         Pageable pageable = PageRequest.of(page, size);
-        return studentRepository.findByName(name, pageable) ;
+        Page<Student> studentPage = studentRepository.findByActiveTrue(pageable);
+
+        return studentPage.map(student -> {
+            List<ClassInformationDTO> classDTOs = student.getClasses().stream()
+                    .map(cls -> ClassInformationDTO.builder()
+                            .id(cls.getId())
+                            .name(cls.getName())
+                            .description(cls.getDescription())
+                            .build())
+                    .collect(Collectors.toList());
+
+            return StudentOnlyClassInformationDTO.builder()
+                    .studentId(student.getId())
+                    .classes(classDTOs)
+                    .build();
+        });
     }
 }
