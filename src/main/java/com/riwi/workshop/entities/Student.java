@@ -1,20 +1,51 @@
 package com.riwi.workshop.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
-@Entity
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
-public class Student {
+import java.time.LocalDate;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Entity
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @ToString
+    @SuperBuilder
+    public class Student {
+
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        private Long id;
+
+        @NotEmpty
+        @Column(length = 100, nullable = false)
+        private String name;
+
+        @NotEmpty
+        @Column(length = 100, nullable = false)
+        private String lastName;
+
+        @NotEmpty
+        @Column(length = 100, nullable = false)
+        private String dni;
+
+        @Email
+        @NotEmpty
+        @Column(length = 100, nullable = false)
+        private String email;
+
+        @Column(length = 255)
+        @NotEmpty
+        private String description;
+
+        @Column(nullable = false, columnDefinition = "true")
+        private Boolean active;
+
+        @FutureOrPresent
+        private LocalDate createdAt;
 }
