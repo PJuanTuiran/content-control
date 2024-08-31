@@ -4,5 +4,6 @@ import com.riwi.workshop.entities.Lesson;
 import com.riwi.workshop.services.crud.CreateModel;
 
 public interface ILessonModel extends
-        CreateModel<Lesson> {
+        CreateModel<Lesson>{
+    void disableLessonById (int id);
 }
