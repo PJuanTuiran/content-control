@@ -41,11 +41,17 @@ import java.util.Set;
         @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT true")
         private Boolean active;
 
-        @PastOrPresent
+        @PastOrPresent(message = "La fecha de creación debe ser en el pasado o presente")
+        @Column(nullable = false)
         private LocalDate createdAt;
 
         @ManyToMany
         @JoinTable(name = "student_class", joinColumns = @JoinColumn(name = "student_id"), inverseJoinColumns = @JoinColumn(name = "class_id")
         )
         private Set<Class> classes;
+
+        @PrePersist
+        protected void onCreate() {
+          this.createdAt = LocalDate.now();
+        }
 }
