@@ -3,6 +3,7 @@ package com.riwi.workshop.controllers.impl;
 import com.riwi.workshop.controllers.interfaces.IStudentController;
 import com.riwi.workshop.entities.DTO.StudentCreateDTO;
 import com.riwi.workshop.entities.DTO.StudentOnlyClassInformationDTO;
+import com.riwi.workshop.entities.DTO.StudentResponseDTO;
 import com.riwi.workshop.entities.Student;
 import com.riwi.workshop.services.impl.StudentModelImpl;
 import jakarta.validation.Valid;
@@ -49,6 +50,14 @@ public class StudentController implements IStudentController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
+
+    @PatchMapping("students/{id}/disable")
+    public ResponseEntity<StudentResponseDTO> disableStudent(@PathVariable Long id) {
+        Optional<StudentResponseDTO> studentOptional = studentModel.disableStudent(id);
+        return studentOptional.map(student -> new ResponseEntity<>(student, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
 
 
 }
