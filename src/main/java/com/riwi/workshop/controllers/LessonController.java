@@ -1,6 +1,8 @@
 package com.riwi.workshop.controllers;
 
+import com.riwi.workshop.controllers.interfaces.ILessonController;
 import com.riwi.workshop.entities.Lesson;
+import com.riwi.workshop.services.Imodel.ILessonModel;
 import com.riwi.workshop.services.impl.LessonModelImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,14 +14,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @RequestMapping("/api/vi/lesson")
-public class LessonController {
+public class LessonController implements ILessonController {
 
     @Autowired
-    LessonModelImpl lessonModel;
+    ILessonModel lessonService;
 
     @PostMapping
     public ResponseEntity<Lesson> saveLesson(@RequestBody @Valid Lesson lesson){
-        return ResponseEntity.status(HttpStatus.CREATED).body(lessonModel.create(lesson));
+        return ResponseEntity.status(HttpStatus.CREATED).body(lessonService.create(lesson));
     }
 
+    @Override
+    @PostMapping
+    public ResponseEntity<Lesson> create(@RequestBody @Valid Lesson lesson) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(lessonService.create(lesson));
+    }
 }
