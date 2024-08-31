@@ -19,14 +19,17 @@ public class LessonController implements ILessonController {
     @Autowired
     ILessonModel lessonService;
 
-    @PostMapping
-    public ResponseEntity<Lesson> saveLesson(@RequestBody @Valid Lesson lesson){
-        return ResponseEntity.status(HttpStatus.CREATED).body(lessonService.create(lesson));
-    }
+//    @Override
+//    @PostMapping
+//    public ResponseEntity<Lesson> create(@RequestBody @Valid Lesson lesson) {
+//        return ResponseEntity.status(HttpStatus.CREATED).body(lessonService.create(lesson));
+//    }
 
-    @Override
-    @PostMapping
     public ResponseEntity<Lesson> create(@RequestBody @Valid Lesson lesson) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(lessonService.create(lesson));
+        try{
+            return ResponseEntity.status(HttpStatus.CREATED).body(lessonService.create(lesson));
+        }catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 }
