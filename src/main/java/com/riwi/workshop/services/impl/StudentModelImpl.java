@@ -1,8 +1,11 @@
 package com.riwi.workshop.services.impl;
 
+import com.riwi.workshop.entities.Class;
 import com.riwi.workshop.entities.DTO.ClassInformationDTO;
+import com.riwi.workshop.entities.DTO.StudentCreateDTO;
 import com.riwi.workshop.entities.DTO.StudentOnlyClassInformationDTO;
 import com.riwi.workshop.entities.Student;
+import com.riwi.workshop.repositories.ClassRepository;
 import com.riwi.workshop.repositories.StudentRepository;
 import com.riwi.workshop.services.Imodel.IStudentModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -20,6 +24,9 @@ public class StudentModelImpl implements IStudentModel {
 
     @Autowired
     StudentRepository studentRepository;
+
+    @Autowired
+    ClassRepository classRepository;
 
     @Override
     public Page<StudentOnlyClassInformationDTO> getActiveStudents(int page, int size, String name) {
@@ -52,5 +59,25 @@ public class StudentModelImpl implements IStudentModel {
     @Override
     public Optional<Student> getById(Long id) {
         return studentRepository.findById(id);
+    }
+
+    @Override
+    public Student create(StudentCreateDTO studentCreateDTO) {
+
+        Set<Class> classes = classRepository.findAllById(studentCreateDTO.getClassIds());
+        if (classes.size() != studentCreateDTO.getClassIds().size()) {
+            throw new IllegalArgumentException("Algunas de las clases especificadas no existen");
+        }
+
+        Student student = Student.builder()
+                .name(studentCreateDTO.getName())
+                .lastName(studentCreateDTO.getLastName())
+                .dni(studentCreateDTO.getDni())
+                .email(studentCreateDTO.getEmail())
+                .active(studentCreateDTO.getActive())
+                .classes(classes)
+                .build();
+
+        return studentRepository.save(student);
     }
 }
