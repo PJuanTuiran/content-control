@@ -7,20 +7,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
-
+@RequestMapping("/api/v1/class")
 public class ClassController implements IClassController {
 
     @Autowired
     private IClassModel iClassModel;
 
     @Override
-    @GetMapping("/class")
+    @GetMapping
     public ResponseEntity<Page<Class>> getPaginatedClasses(
             @RequestParam(required = false) String name,
             @RequestParam(required = false) String description,
@@ -38,8 +35,8 @@ public class ClassController implements IClassController {
         return ResponseEntity.ok(paginatedClasses);
     }
     @Override
-    @GetMapping("/class")
-    public ResponseEntity<Class> getClassById(@RequestParam Long id) {
+    @GetMapping("/{id}")
+    public ResponseEntity<Class> getClassById(@PathVariable Long id) {
         Optional<Class> optionalClass = iClassModel.getClassById(id);
 
         if (optionalClass.isPresent()) {
@@ -49,7 +46,7 @@ public class ClassController implements IClassController {
         }
     }
     @Override
-    @PostMapping("/class")
+    @PostMapping
     public ResponseEntity<Class> createClass(@Valid @RequestBody Class newClass) {
 
         Class savedClass = iClassModel.save(newClass);

@@ -18,14 +18,14 @@ public class Class{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @Column(nullable = false)
     private String name;
 
 
-
+    @Column(nullable = false)
     private String description;
-
-    private boolean active;
+    @Column(nullable = false)
+    private boolean active = true;
     @OneToMany(mappedBy = "class")
     private List<Student> students;
 
