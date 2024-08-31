@@ -1,17 +1,23 @@
 package com.riwi.workshop.controllers.impl;
 
 import com.riwi.workshop.controllers.interfaces.IStudentController;
+import com.riwi.workshop.entities.DTO.StudentCreateDTO;
 import com.riwi.workshop.entities.DTO.StudentOnlyClassInformationDTO;
 import com.riwi.workshop.entities.Student;
 import com.riwi.workshop.services.impl.StudentModelImpl;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/")
+@Validated
 public class StudentController implements IStudentController {
 
     @Autowired
@@ -32,6 +38,16 @@ public class StudentController implements IStudentController {
             @PathVariable Long id
     ){
         return studentModel.getById(id);
+    }
+
+    @PostMapping("students")
+    public ResponseEntity<Student> createStudent(@Valid @RequestBody StudentCreateDTO studentCreateDTO) {
+        try {
+            Student student = studentModel.create(studentCreateDTO);
+            return new ResponseEntity<>(student, HttpStatus.CREATED);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
 
