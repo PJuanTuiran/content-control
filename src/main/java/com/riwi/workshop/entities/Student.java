@@ -1,9 +1,7 @@
 package com.riwi.workshop.entities;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.FutureOrPresent;
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -15,7 +13,6 @@ import java.util.Set;
     @Setter
     @AllArgsConstructor
     @NoArgsConstructor
-    @ToString
     @SuperBuilder
     public class Student {
 
@@ -23,35 +20,31 @@ import java.util.Set;
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         private Long id;
 
-        @NotEmpty
+        @NotEmpty(message = "the name can't be empty")
         @Column(length = 100, nullable = false)
         private String name;
 
-        @NotEmpty
+        @NotEmpty(message = "the lastName can't be empty")
         @Column(length = 100, nullable = false)
         private String lastName;
 
-        @NotEmpty
+        @NotEmpty(message = "the dni can't be empty")
         @Column(length = 100, nullable = false)
         private String dni;
 
         @Email
-        @NotEmpty
+        @NotEmpty(message = "the email can't be empty")
         @Column(length = 100, nullable = false)
         private String email;
 
-        @Column(length = 255)
-        @NotEmpty
-        private String description;
-
-        @Column(nullable = false, columnDefinition = "true")
+        @NotNull(message = "The active status cannot be null")
+        @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT true")
         private Boolean active;
 
-        @FutureOrPresent
+        @PastOrPresent
         private LocalDate createdAt;
 
         @ManyToMany
-
         @JoinTable(name = "student_class", joinColumns = @JoinColumn(name = "student_id"), inverseJoinColumns = @JoinColumn(name = "class_id")
         )
         private Set<Class> classes;
