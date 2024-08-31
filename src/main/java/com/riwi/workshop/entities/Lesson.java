@@ -20,8 +20,10 @@ public class Lesson {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotNull(message = "Requiered title")
+    @Column(nullable = false)
     private String title;
     @NotNull(message = "Requiered description")
+    @Column(nullable = false)
     private String description;
     private List<ContentType> multimediaContent;
     @Enumerated(EnumType.STRING)
@@ -30,5 +32,7 @@ public class Lesson {
     @NotNull(message = "Requiered url")
     @Size(max = 255,message = "Requiered url")
     private String url;
+    @Column(nullable = false, columnDefinition = "boolean default true")
+    private Boolean status;
 
 }
