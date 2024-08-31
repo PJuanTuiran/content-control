@@ -29,4 +29,9 @@ public class LessonModelImpl implements ILessonModel {
             throw new EntityNotFoundException("Id not found");
         }
     }
+
+    @Override
+    public Lesson getByIdModel(Long id) {
+        return lessonRepository.findById(id).orElseThrow();
+    }
 }
