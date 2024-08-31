@@ -21,7 +21,7 @@ public class LessonController implements ILessonController {
 //    public ResponseEntity<Lesson> create(@RequestBody @Valid Lesson lesson) {
 //        return ResponseEntity.status(HttpStatus.CREATED).body(lessonService.create(lesson));
 //    }
-
+    @PostMapping
     public ResponseEntity<Lesson> create(@RequestBody @Valid Lesson lesson) {
         try{
             return ResponseEntity.status(HttpStatus.CREATED).body(lessonService.create(lesson));
@@ -31,7 +31,7 @@ public class LessonController implements ILessonController {
     }
 
     @Override
-    @PatchMapping("/api/v1/{id}/disable")
+    @PatchMapping("/{id}/disable")
     public ResponseEntity<Lesson> disableLesosnById(@PathVariable Long id) {
          return ResponseEntity.ok(lessonService.disableLessonById(id));
     }
