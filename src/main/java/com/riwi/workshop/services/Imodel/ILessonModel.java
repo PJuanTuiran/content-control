@@ -1,4 +1,8 @@
 package com.riwi.workshop.services.Imodel;
 
-public interface ILessonModel {
+import com.riwi.workshop.entities.Lesson;
+import com.riwi.workshop.services.crud.CreateModel;
+
+public interface ILessonModel extends
+        CreateModel<Lesson> {
 }

@@ -19,7 +19,7 @@ public class LessonController {
 
     @PostMapping
     public ResponseEntity<Lesson> saveLesson(@RequestBody @Valid Lesson lesson){
-        return ResponseEntity.status(HttpStatus.CREATED).body(lessonModel.saveLesson(lesson));
+        return ResponseEntity.status(HttpStatus.CREATED).body(lessonModel.create(lesson));
     }
 
 }
