@@ -23,4 +23,9 @@ public class ClassModelImpl implements IClassModel {
     public Optional<Class> getClassById(Long id) {
         return classRepository.findByIdAndActiveTrue(id);
     }
+
+    @Override
+    public Class save(Class aClass) {
+        return classRepository.save(aClass);
+    }
 }

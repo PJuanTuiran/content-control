@@ -2,10 +2,14 @@ package com.riwi.workshop.controllers;
 
 import com.riwi.workshop.entities.Class;
 import com.riwi.workshop.services.Imodel.IClassModel;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Optional;
@@ -44,5 +48,16 @@ public class ClassController implements IClassController {
             return ResponseEntity.notFound().build();
         }
     }
+    @Override
+    @PostMapping("/class")
+    public ResponseEntity<Class> createClass(@Valid @RequestBody Class newClass) {
+
+        Class savedClass = iClassModel.save(newClass);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedClass);
+    }
+
+
+
 
 }

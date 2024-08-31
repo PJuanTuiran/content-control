@@ -8,4 +8,5 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface IClassController  {
      ResponseEntity<Page<Class>> getPaginatedClasses(String name, String description, int page, int size);
      public ResponseEntity<Class> getClassById( Long id);
+     public ResponseEntity<Class> createClass( Class newClass);
 }
