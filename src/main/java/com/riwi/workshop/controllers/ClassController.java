@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Optional;
+
 public class ClassController implements IClassController {
 
     @Autowired
@@ -30,6 +32,17 @@ public class ClassController implements IClassController {
         }
 
         return ResponseEntity.ok(paginatedClasses);
+    }
+    @Override
+    @GetMapping("/class")
+    public ResponseEntity<Class> getClassById(@RequestParam Long id) {
+        Optional<Class> optionalClass = iClassModel.getClassById(id);
+
+        if (optionalClass.isPresent()) {
+            return ResponseEntity.ok(optionalClass.get());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
 }

@@ -8,6 +8,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
+import java.util.Optional;
+
 public class ClassModelImpl implements IClassModel {
     @Autowired
     ClassRepository classRepository;
@@ -15,5 +17,10 @@ public class ClassModelImpl implements IClassModel {
     public Page<Class> getPaginatedClasses(String name, String description, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         return classRepository.findByActiveTrueAndNameContainingAndDescriptionContaining(name, description, pageable);
+    }
+
+    @Override
+    public Optional<Class> getClassById(Long id) {
+        return classRepository.findByIdAndActiveTrue(id);
     }
 }
