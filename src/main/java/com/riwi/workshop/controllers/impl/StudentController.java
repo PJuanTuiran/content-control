@@ -1,5 +1,6 @@
-package com.riwi.workshop.controllers;
+package com.riwi.workshop.controllers.impl;
 
+import com.riwi.workshop.controllers.interfaces.IStudentController;
 import com.riwi.workshop.entities.DTO.StudentOnlyClassInformationDTO;
 import com.riwi.workshop.entities.Student;
 import com.riwi.workshop.services.impl.StudentModelImpl;
@@ -11,11 +12,12 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/")
-public class StudentController {
+public class StudentController implements IStudentController {
 
     @Autowired
     StudentModelImpl studentModel;
 
+    @Override
     @GetMapping("students")
     public Page<StudentOnlyClassInformationDTO> getActiveStudents(
             @RequestParam(value = "page", defaultValue = "0") int page,
