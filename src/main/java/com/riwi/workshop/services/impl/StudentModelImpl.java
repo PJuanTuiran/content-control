@@ -4,6 +4,7 @@ import com.riwi.workshop.entities.Class;
 import com.riwi.workshop.entities.DTO.ClassInformationDTO;
 import com.riwi.workshop.entities.DTO.StudentCreateDTO;
 import com.riwi.workshop.entities.DTO.StudentOnlyClassInformationDTO;
+import com.riwi.workshop.entities.DTO.StudentResponseDTO;
 import com.riwi.workshop.entities.Student;
 import com.riwi.workshop.repositories.ClassRepository;
 import com.riwi.workshop.repositories.StudentRepository;
@@ -54,6 +55,36 @@ public class StudentModelImpl implements IStudentModel {
                     .classes(classDTOs)
                     .build();
         });
+    }
+
+    @Override
+    public Optional<StudentResponseDTO> disableStudent(Long id) {
+        Optional<Student> optionalStudent = studentRepository.findById(id);
+        if (optionalStudent.isPresent()) {
+            Student student = optionalStudent.get();
+            student.setActive(false);
+            student = studentRepository.save(student);
+            StudentResponseDTO responseDTO = StudentResponseDTO.builder()
+                    .id(student.getId())
+                    .name(student.getName())
+                    .lastName(student.getLastName())
+                    .dni(student.getDni())
+                    .email(student.getEmail())
+                    .active(student.getActive())
+                    .createdAt(student.getCreatedAt())
+                    .classes(student.getClasses().stream()
+                            .map(cls -> ClassInformationDTO.builder()
+                                    .id(cls.getId())
+                                    .name(cls.getName())
+                                    .description(cls.getDescription())
+                                    .build())
+                            .collect(Collectors.toSet()))
+                    .build();
+
+            return Optional.of(responseDTO);
+        } else {
+            return Optional.empty();
+        }
     }
 
     @Override
