@@ -14,6 +14,6 @@ public class ClassModelImpl implements IClassModel {
     @Override
     public Page<Class> getPaginatedClasses(String name, String description, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        return classRepository.findByNombreContainingAndDescripcionContaining(name, description, pageable);
+        return classRepository.findByActiveTrueAndNameContainingAndDescriptionContaining(name, description, pageable);
     }
 }

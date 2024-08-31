@@ -20,12 +20,14 @@ public class Class{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String nombre;
-
-    private String codigo;
-
-    private String descripcion;
+    private String name;
 
 
-    private String profesor;
+
+    private String description;
+
+    private boolean active;
+
+
+
 }
