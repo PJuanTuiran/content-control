@@ -3,6 +3,11 @@ package com.riwi.workshop.controllers.impl;
 import com.riwi.workshop.controllers.interfaces.IClassController;
 import com.riwi.workshop.entities.Class;
 import com.riwi.workshop.services.Imodel.IClassModel;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,6 +22,13 @@ public class ClassController implements IClassController {
     @Autowired
     private IClassModel iClassModel;
 
+    @Operation(summary = "Obtiene una lista paginada de clases",
+            description = "Devuelve una lista paginada de clases con opciones de filtrado por nombre y descripción",
+            responses = {
+                    @ApiResponse(description = "Lista de clases", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Class.class))),
+                    @ApiResponse(responseCode = "204", description = "No se encontraron clases"),
+                    @ApiResponse(responseCode = "500", description = "Error interno del servidor")
+            })
     @Override
     @GetMapping
     public ResponseEntity<Page<Class>> getPaginatedClasses(
@@ -35,6 +47,14 @@ public class ClassController implements IClassController {
 
         return ResponseEntity.ok(paginatedClasses);
     }
+
+    @Operation(summary = "Obtiene una clase por ID",
+            description = "Devuelve una clase específica según el ID proporcionado",
+            responses = {
+                    @ApiResponse(description = "Clase encontrada", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Class.class))),
+                    @ApiResponse(responseCode = "404", description = "Clase no encontrada"),
+                    @ApiResponse(responseCode = "500", description = "Error interno del servidor")
+            })
     @Override
     @GetMapping("/{id}")
     public ResponseEntity<Class> getClassById(@PathVariable Long id) {
@@ -46,6 +66,15 @@ public class ClassController implements IClassController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @Operation(summary = "Crea una nueva clase",
+            description = "Crea una nueva clase con la información proporcionada",
+            requestBody = @RequestBody(description = "Información de la clase a crear", required = true, content = @Content(mediaType = "application/json", schema = @Schema(implementation = Class.class))),
+            responses = {
+                    @ApiResponse(description = "Clase creada", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Class.class))),
+                    @ApiResponse(responseCode = "400", description = "Solicitud inválida"),
+                    @ApiResponse(responseCode = "500", description = "Error interno del servidor")
+            })
     @Override
     @PostMapping
     public ResponseEntity<Class> createClass(@Valid @RequestBody Class newClass) {
