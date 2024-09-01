@@ -4,6 +4,7 @@ import com.riwi.workshop.controllers.interfaces.IStudentController;
 import com.riwi.workshop.entities.DTO.StudentCreateDTO;
 import com.riwi.workshop.entities.DTO.StudentOnlyClassInformationDTO;
 import com.riwi.workshop.entities.DTO.StudentResponseDTO;
+import com.riwi.workshop.entities.DTO.StudentUpdateDTO;
 import com.riwi.workshop.entities.Student;
 import com.riwi.workshop.services.impl.StudentModelImpl;
 import jakarta.validation.Valid;
@@ -58,6 +59,20 @@ public class StudentController implements IStudentController {
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    @Override
+    public ResponseEntity<StudentResponseDTO> updateStudent(
+            @RequestParam(value = "id") Long id,
+            @Valid @RequestBody StudentUpdateDTO studentUpdateDTO) {
+        try {
+            Optional<StudentResponseDTO> updatedStudent = studentModel.updateStudent(id, studentUpdateDTO);
+            return updatedStudent.map(student -> new ResponseEntity<>(student, HttpStatus.OK))
+                    .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
 
 }
