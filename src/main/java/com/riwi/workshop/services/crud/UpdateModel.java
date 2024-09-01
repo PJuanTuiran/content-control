@@ -1,4 +1,4 @@
 package com.riwi.workshop.services.crud;
 
-public interface UpdateModel {
+public interface UpdateModel{
 }
