@@ -3,6 +3,7 @@ package com.riwi.workshop.services.impl;
 import com.riwi.workshop.entities.Class;
 import com.riwi.workshop.entities.DTO.*;
 import com.riwi.workshop.entities.Student;
+import com.riwi.workshop.exception.EntityNotFoundException;
 import com.riwi.workshop.repositories.ClassRepository;
 import com.riwi.workshop.repositories.StudentRepository;
 import com.riwi.workshop.services.Imodel.IStudentModel;
@@ -124,8 +125,8 @@ public class StudentModelImpl implements IStudentModel {
     }
 
     @Override
-    public Optional<Student> getById(Long id) {
-        return studentRepository.findById(id);
+    public Student getById(Long id) {
+        return studentRepository.findById(id).orElseThrow(()-> new EntityNotFoundException("Student with ID " + id + " not found"));
     }
 
     @Override

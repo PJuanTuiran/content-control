@@ -6,6 +6,7 @@ import com.riwi.workshop.entities.DTO.StudentOnlyClassInformationDTO;
 import com.riwi.workshop.entities.DTO.StudentResponseDTO;
 import com.riwi.workshop.entities.DTO.StudentUpdateDTO;
 import com.riwi.workshop.entities.Student;
+import com.riwi.workshop.exception.EntityNotFoundException;
 import com.riwi.workshop.services.impl.StudentModelImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,12 +47,15 @@ public class StudentController implements IStudentController {
             @PathVariable Long id
     ) {
         try {
-            Optional<Student> optionalStudent = studentModel.getById(id);
-            return optionalStudent.map(student -> new ResponseEntity<>(student, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+            Student student = studentModel.getById(id);
+            return new ResponseEntity<>(student, HttpStatus.OK);
+        } catch (EntityNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
 
 
     @PostMapping("students")
