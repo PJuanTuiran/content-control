@@ -27,20 +27,32 @@ public class StudentController implements IStudentController {
 
     @Override
     @GetMapping("students")
-    public Page<StudentOnlyClassInformationDTO> getActiveStudents(
+    public ResponseEntity<Page<StudentOnlyClassInformationDTO>> getActiveStudents(
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "10") int size,
             @RequestParam(value = "name", required = false) String name
-    ){
-        return studentModel.getActiveStudents(page, size, name);
+    ) {
+        try {
+            Page<StudentOnlyClassInformationDTO> studentsPage = studentModel.getActiveStudents(page, size, name);
+            return new ResponseEntity<>(studentsPage, HttpStatus.OK);
+        } catch (Exception e) {
+            // Log the exception details if needed
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @GetMapping("students/{id}")
-    public Optional<Student> getById(
+    public ResponseEntity<Student> getById(
             @PathVariable Long id
-    ){
-        return studentModel.getById(id);
+    ) {
+        try {
+            Optional<Student> optionalStudent = studentModel.getById(id);
+            return optionalStudent.map(student -> new ResponseEntity<>(student, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
+
 
     @PostMapping("students")
     public ResponseEntity<Student> createStudent(@Valid @RequestBody StudentCreateDTO studentCreateDTO) {
@@ -59,6 +71,7 @@ public class StudentController implements IStudentController {
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    @PutMapping("students")
     @Override
     public ResponseEntity<StudentResponseDTO> updateStudent(
             @RequestParam(value = "id") Long id,

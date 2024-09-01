@@ -10,8 +10,8 @@ import org.springframework.http.ResponseEntity;
 import java.util.Optional;
 
 public interface IStudentController {
-    Page<StudentOnlyClassInformationDTO> getActiveStudents(int page, int size, String name);
-    public Optional<Student> getById(Long id);
+    ResponseEntity<Page<StudentOnlyClassInformationDTO>> getActiveStudents(int page, int size, String name);
+    public ResponseEntity<Student> getById(Long id);
     ResponseEntity<StudentResponseDTO> disableStudent(Long id);
     ResponseEntity<StudentResponseDTO> updateStudent(Long id, StudentUpdateDTO studentUpdateDTO);
 }
