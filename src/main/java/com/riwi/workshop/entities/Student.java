@@ -6,6 +6,7 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -48,7 +49,7 @@ import java.util.Set;
         @ManyToMany
         @JoinTable(name = "student_class", joinColumns = @JoinColumn(name = "student_id"), inverseJoinColumns = @JoinColumn(name = "class_id")
         )
-        private Set<Class> classes;
+        private List<Class> classes;
 
         @PrePersist
         protected void onCreate() {

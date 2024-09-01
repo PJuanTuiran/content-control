@@ -132,7 +132,7 @@ public class StudentModelImpl implements IStudentModel {
     @Override
     public Student create(StudentCreateDTO studentCreateDTO) {
 
-        Set<Class> classes = classRepository.findAllById(studentCreateDTO.getClassIds());
+        List<Class> classes = classRepository.findAllById(studentCreateDTO.getClassIds());
         if (classes.size() != studentCreateDTO.getClassIds().size()) {
             throw new IllegalArgumentException("Algunas de las clases especificadas no existen");
         }
@@ -147,5 +147,6 @@ public class StudentModelImpl implements IStudentModel {
                 .build();
 
         return studentRepository.save(student);
+
     }
 }

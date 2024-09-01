@@ -1,27 +1,39 @@
 package com.riwi.workshop.entities;
 
 import jakarta.persistence.*;
-import lombok.*;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.util.List;
+
 
 import java.util.Set;
 
 @Entity
-@Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
-@Builder
-public class Class {
+@Getter
+@Setter
+public class Class{
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String name;
-    private String description;
 
-    // Relación muchos a muchos con la entidad Student
-    @ManyToMany(mappedBy = "classes")
-    private Set<Student> students;
+
+    @Column(nullable = false)
+    private String description;
+    @Column(nullable = false)
+    private boolean active = true;
+    @OneToMany(mappedBy = "classes")
+    private List<Student> students;
+
+
 }
