@@ -1,4 +1,7 @@
 package com.riwi.workshop.services.crud;
 
-public interface GetByIdModel {
+import java.util.Optional;
+
+public interface GetByIdModel <Entity, ID>{
+    Entity getById(ID id);
 }

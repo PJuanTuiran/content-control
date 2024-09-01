@@ -1,4 +1,19 @@
 package com.riwi.workshop.services.Imodel;
 
-public interface IStudentModel {
+import com.riwi.workshop.entities.DTO.StudentCreateDTO;
+import com.riwi.workshop.entities.DTO.StudentOnlyClassInformationDTO;
+import com.riwi.workshop.entities.DTO.StudentResponseDTO;
+import com.riwi.workshop.entities.DTO.StudentUpdateDTO;
+import com.riwi.workshop.entities.Student;
+import com.riwi.workshop.services.crud.CreateModel;
+import com.riwi.workshop.services.crud.GetByIdModel;
+import org.springframework.data.domain.Page;
+
+import java.util.List;
+import java.util.Optional;
+
+public interface IStudentModel extends GetByIdModel<Student, Long>, CreateModel<Student, StudentCreateDTO> {
+    Page<StudentOnlyClassInformationDTO> getActiveStudents(int page, int size, String name);
+    Optional<StudentResponseDTO> disableStudent(Long id);
+    Optional<StudentResponseDTO> updateStudent(Long id, StudentUpdateDTO studentUpdateDTO);
 }
