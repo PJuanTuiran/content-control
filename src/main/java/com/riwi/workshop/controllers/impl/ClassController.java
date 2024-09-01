@@ -3,6 +3,7 @@ package com.riwi.workshop.controllers.impl;
 import com.riwi.workshop.controllers.interfaces.IClassController;
 import com.riwi.workshop.entities.Class;
 import com.riwi.workshop.services.Imodel.IClassModel;
+import com.riwi.workshop.services.impl.ClassModelImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -16,11 +17,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
+@RestController
 @RequestMapping("/api/v1/class")
 public class ClassController implements IClassController {
 
     @Autowired
-    private IClassModel iClassModel;
+    private ClassModelImpl iClassModel;
 
     @Operation(summary = "Obtiene una lista paginada de clases",
             description = "Devuelve una lista paginada de clases con opciones de filtrado por nombre y descripción",

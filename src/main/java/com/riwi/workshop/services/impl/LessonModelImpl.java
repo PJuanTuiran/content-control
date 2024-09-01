@@ -6,9 +6,10 @@ import com.riwi.workshop.repositories.LessonRepository;
 import com.riwi.workshop.services.Imodel.ILessonModel;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-
+@Service
 public class LessonModelImpl implements ILessonModel {
 
     @Autowired

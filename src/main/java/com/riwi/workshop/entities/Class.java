@@ -39,9 +39,9 @@ public class Class{
     @Schema(description = "Estado activo de la clase", example = "true")
     private boolean active = true;
 
-    @ManyToMany(mappedBy = "classes")
-    @Schema(description = "Lista de estudiantes asociados a la clase")
-    private List<Student> students;
-
+    @ManyToOne
+    @JoinColumn(name = "student_id", nullable = false)
+    @Schema(description = "Estudiante asociado a la clase")
+    private Student student;
 
 }

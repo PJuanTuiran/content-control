@@ -55,10 +55,7 @@ import java.util.Set;
     @Schema(description = "Fecha de creación del registro del estudiante", example = "2024-08-31")
     private LocalDate createdAt;
 
-    @ManyToMany
-    @JoinTable(name = "student_class",
-            joinColumns = @JoinColumn(name = "student_id"),
-            inverseJoinColumns = @JoinColumn(name = "class_id"))
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
     @Schema(description = "Lista de clases asociadas al estudiante")
     private List<Class> classes;
 
