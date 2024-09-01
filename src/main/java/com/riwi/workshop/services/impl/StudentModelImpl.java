@@ -1,10 +1,7 @@
 package com.riwi.workshop.services.impl;
 
 import com.riwi.workshop.entities.Class;
-import com.riwi.workshop.entities.DTO.ClassInformationDTO;
-import com.riwi.workshop.entities.DTO.StudentCreateDTO;
-import com.riwi.workshop.entities.DTO.StudentOnlyClassInformationDTO;
-import com.riwi.workshop.entities.DTO.StudentResponseDTO;
+import com.riwi.workshop.entities.DTO.*;
 import com.riwi.workshop.entities.Student;
 import com.riwi.workshop.repositories.ClassRepository;
 import com.riwi.workshop.repositories.StudentRepository;
@@ -85,6 +82,45 @@ public class StudentModelImpl implements IStudentModel {
         } else {
             return Optional.empty();
         }
+    }
+
+    @Override
+    public Optional<StudentResponseDTO> updateStudent(Long id, StudentUpdateDTO studentUpdateDTO) {
+        Optional<Student> optionalStudent = studentRepository.findById(id);
+        if (!optionalStudent.isPresent()) {
+            return Optional.empty();
+        }
+
+        Student student = optionalStudent.get();
+        student.setName(studentUpdateDTO.getName());
+        student.setLastName(studentUpdateDTO.getLastName());
+        student.setDni(studentUpdateDTO.getDni());
+        student.setEmail(studentUpdateDTO.getEmail());
+        student.setActive(studentUpdateDTO.getActive());
+
+        try {
+            student = studentRepository.save(student);
+        } catch (Exception e) {
+            throw new RuntimeException("Error updating student", e);
+        }
+
+        StudentResponseDTO responseDTO = StudentResponseDTO.builder()
+                .id(student.getId())
+                .name(student.getName())
+                .lastName(student.getLastName())
+                .dni(student.getDni())
+                .email(student.getEmail())
+                .active(student.getActive())
+                .createdAt(student.getCreatedAt())
+                .classes(student.getClasses().stream()
+                        .map(cls -> ClassInformationDTO.builder()
+                                .id(cls.getId())
+                                .name(cls.getName())
+                                .description(cls.getDescription())
+                                .build())
+                        .collect(Collectors.toSet()))
+                .build();
+        return Optional.of(responseDTO);
     }
 
     @Override
