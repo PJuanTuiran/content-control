@@ -32,7 +32,13 @@ public class LessonController implements ILessonController {
 
     @Override
     @PatchMapping("/{id}/disable")
-    public ResponseEntity<Lesson> disableLesosnById(@PathVariable Long id) {
+    public ResponseEntity<Lesson> disableLesosnById(@PathVariable @ Valid Long id) {
          return ResponseEntity.ok(lessonService.disableLessonById(id));
+    }
+
+    @Override
+    @GetMapping("/{id}/multimedia")
+    public ResponseEntity<Lesson> getById(@PathVariable Long id) {
+        return ResponseEntity.ok(lessonService.getByIdModel(id));
     }
 }
