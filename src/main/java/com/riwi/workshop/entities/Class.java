@@ -44,4 +44,8 @@ public class Class{
     @Schema(description = "Estudiante asociado a la clase")
     private Student student;
 
+
+    @OneToMany(mappedBy = "idClass")
+    private Set<Lesson> lessons;
+
 }

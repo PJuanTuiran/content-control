@@ -8,6 +8,7 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -35,7 +36,8 @@ public class Lesson {
     private String description;
 
     @Schema(description = "Contenido multimedia asociado a la lección", example = "[\"VIDEO\", \"PDF\"]")
-    private List<ContentType> multimediaContent;
+    @OneToMany(mappedBy = "idLesson")
+    private Set<MultimediaContent> multimediaContent;
 
     @Enumerated(EnumType.STRING)
     @NotNull(message = "Requiered type Content")
@@ -51,59 +53,9 @@ public class Lesson {
     @Schema(description = "Estado de la lección", example = "true")
     private Boolean status;
 
-    public Long getId() {
-        return id;
-    }
+    @ManyToOne
+    @JoinColumn(name = "idClass")
+    private Class idClass;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 
-    public Boolean getStatus() {
-        return status;
-    }
-
-    public void setStatus(Boolean status) {
-        this.status = status;
-    }
-
-    public @NotNull(message = "Requiered url") @Size(max = 255, message = "Requiered url") String getUrl() {
-        return url;
-    }
-
-    public void setUrl(@NotNull(message = "Requiered url") @Size(max = 255, message = "Requiered url") String url) {
-        this.url = url;
-    }
-
-    public @NotNull(message = "Requiered type Content") ContentType getType() {
-        return type;
-    }
-
-    public void setType(@NotNull(message = "Requiered type Content") ContentType type) {
-        this.type = type;
-    }
-
-    public List<ContentType> getMultimediaContent() {
-        return multimediaContent;
-    }
-
-    public void setMultimediaContent(List<ContentType> multimediaContent) {
-        this.multimediaContent = multimediaContent;
-    }
-
-    public @NotNull(message = "Requiered description") String getDescription() {
-        return description;
-    }
-
-    public void setDescription(@NotNull(message = "Requiered description") String description) {
-        this.description = description;
-    }
-
-    public @NotNull(message = "Requiered title") String getTitle() {
-        return title;
-    }
-
-    public void setTitle(@NotNull(message = "Requiered title") String title) {
-        this.title = title;
-    }
 }
